@@ -727,6 +727,7 @@ static inline char *inet_ntop(sa_family_t family, const void *src, char *dst,
 /** sockopt: Async error (ignored, for compatibility) */
 #define SO_ERROR 4
 #define SO_RCVTIMEO 20
+#define SO_SNDTIMEO 21
 #define SO_BINDTODEVICE 25
 
 /** sockopt: Timestamp TX packets */

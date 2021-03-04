@@ -8,6 +8,7 @@
 #include "shell_utils.h"
 #include "shell_wildcard.h"
 
+static uint8_t raw_argument = CONFIG_SHELL_ARGC_MAX;
 extern const struct shell_cmd_entry __shell_root_cmds_start[];
 extern const struct shell_cmd_entry __shell_root_cmds_end[];
 
@@ -61,7 +62,15 @@ void z_shell_multiline_data_calc(struct shell_multiline_cons *cons,
 	cons->cur_x_end = (buff_len + cons->name_len) % cons->terminal_wid + 1;
 }
 
-static char make_argv(char **ppcmd, uint8_t c)
+uint8_t shell_set_raw_argument(uint8_t arg)
+{
+	uint8_t prev = raw_argument;
+
+	raw_argument = arg;
+	return prev;
+}
+
+static char make_argv(char **ppcmd, uint8_t c, size_t argc)
 {
 	char *cmd = *ppcmd;
 	char quote = 0;
@@ -71,6 +80,12 @@ static char make_argv(char **ppcmd, uint8_t c)
 
 		if (c == '\0') {
 			break;
+		}
+
+		/* this argument gets all remaining characters, unmodified */
+		if (argc >= raw_argument) {
+			cmd += 1;
+			continue;
 		}
 
 		if (!quote) {
@@ -192,7 +207,7 @@ char z_shell_make_argv(size_t *argc, const char **argv, char *cmd,
 		if (*argc == max_argc) {
 			break;
 		}
-		quote = make_argv(&cmd, c);
+		quote = make_argv(&cmd, c, (*argc) - 1);
 	} while (true);
 
 	return quote;

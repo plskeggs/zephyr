@@ -1034,6 +1034,18 @@ int shell_execute_cmd(const struct shell *shell, const char *cmd);
  */
 int shell_set_root_cmd(const char *cmd);
 
+/** @brief Set raw argument number.
+ *
+ *  If set to a value less than CONFIG_SHELL_ARGC_MAX, when reached by a
+ *  given shell command, all characters until the final `\0' are passed
+ *  to this argument number unmodified.
+ *
+ *  @param arg Argument number which gets all remaining characters on the line.
+ *
+ *  @returns previous value.
+ */
+uint8_t shell_set_raw_argument(uint8_t arg);
+
 /**
  * @}
  */

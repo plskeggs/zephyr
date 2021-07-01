@@ -430,4 +430,12 @@ config MBEDTLS_SSL_EXTENDED_MASTER_SECRET
 	  which ensures that master secrets are different for every
 	  connection and every session.
 
+config MBEDTLS_SSL_DTLS_CONNECTION_ID
+	bool "DTLS Connection ID extension"
+	depends on MBEDTLS_DTLS
+	help
+	  Enable support for the DTLS Connection ID extension
+	  which allows to identify DTLS connections across changes
+	  in the underlying transport.
+
 endmenu

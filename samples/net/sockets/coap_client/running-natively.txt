@@ -1,0 +1,23 @@
+# note: cannot run within the corporate network!  no VPN
+
+# peters@pesk:/mnt/c/source/zephyr-dev/zephyr$ git branch --show-current
+# feature-dtls-cid-us-test
+# peters@pesk:/mnt/c/source/zephyr-dev/zephyr$ git remote -v
+# origin  https://github.com/plskeggs/zephyr.git (fetch)
+# origin  https://github.com/plskeggs/zephyr.git (push)
+# upstream        https://github.com/zephyrproject-rtos/zephyr.git (fetch)
+# upstream        https://github.com/zephyrproject-rtos/zephyr.git (push)
+
+west build -p auto -b native_posix samples/net/sockets/coap_client -- -DOVERLAY_CONFIG="overlay-mbedtls.conf;overlay-debug.conf"
+cd /mnt/c/source/net-tools
+sudo ./net-setup.sh start
+sudo dnsmasq -i zeth
+sudo iptables -A FORWARD -i zeth -j ACCEPT
+sudo iptables -A FORWARD -i eth0 -j ACCEPT
+sudo iptables -t nat -A POSTROUTING -o zeth -j MASQUERADE
+sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+# in another terminal:
+sudo tcpdump -i eth0 -i zeth -vv
+# in the original terminal:
+./build-dk/zephyr/zephyr.exe -rt
+

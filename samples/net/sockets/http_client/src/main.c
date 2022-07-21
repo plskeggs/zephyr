@@ -14,8 +14,8 @@ LOG_MODULE_REGISTER(net_http_client_sample, LOG_LEVEL_DBG);
 
 #include "ca_certificate.h"
 
-#define HTTP_PORT 8000
-#define HTTPS_PORT 4443
+#define HTTP_PORT 80
+#define HTTPS_PORT 443
 
 #if defined(CONFIG_NET_CONFIG_PEER_IPV6_ADDR)
 #define SERVER_ADDR6  CONFIG_NET_CONFIG_PEER_IPV6_ADDR
@@ -23,11 +23,11 @@ LOG_MODULE_REGISTER(net_http_client_sample, LOG_LEVEL_DBG);
 #define SERVER_ADDR6 ""
 #endif
 
-#if defined(CONFIG_NET_CONFIG_PEER_IPV4_ADDR)
-#define SERVER_ADDR4  CONFIG_NET_CONFIG_PEER_IPV4_ADDR
-#else
-#define SERVER_ADDR4 ""
-#endif
+//#if defined(CONFIG_NET_CONFIG_PEER_IPV4_ADDR)
+//#define SERVER_ADDR4  CONFIG_NET_CONFIG_PEER_IPV4_ADDR
+//#else
+#define SERVER_ADDR4 "98.137.11.164"
+//#endif
 
 #define MAX_RECV_BUF_LEN 512
 
